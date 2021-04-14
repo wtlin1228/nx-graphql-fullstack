@@ -1,0 +1,23 @@
+directive @auth on FIELD_DEFINITION
+
+type Post {
+  id: ID!
+  message: String!
+  author: User!
+  createdAt: String!
+  likes: Int!
+  views: Int!
+}
+
+input CreatePostInput {
+  message: String!
+}
+
+type Query {
+  posts: [Post]!
+  post(id: ID!): Post!
+}
+
+type Mutation {
+  createPost(createPostInput: CreatePostInput!): Post! @auth
+}

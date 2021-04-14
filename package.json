@@ -23,13 +23,22 @@
     "update": "nx migrate latest",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "graphql:type-generator": "ts-node ./apps/graphql-server/src/generate-typings.ts",
+    "graphql:schema-generator": ""
   },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
+    "@nestjs/graphql": "7.10.3",
     "@nestjs/platform-express": "^7.0.0",
+    "apollo-server-express": "2.22.2",
+    "graphql": "15.5.0",
+    "graphql-tools": "7.0.4",
+    "jsonwebtoken": "8.5.1",
+    "lowdb": "1.0.0",
+    "nanoid": "3.1.22",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0"

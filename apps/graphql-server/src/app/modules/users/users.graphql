@@ -1,0 +1,49 @@
+directive @auth on FIELD_DEFINITION
+
+enum Role {
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+type User {
+  id: ID!
+  email: String!
+  avatar: String!
+  verified: Boolean!
+  createdAt: String!
+  posts: [Post]!
+  role: Role! @auth
+}
+
+type AuthUser {
+  token: String!
+  user: User!
+}
+
+input SignupInput {
+  email: String!
+  password: String!
+  role: Role!
+}
+
+input SigninInput {
+  email: String!
+  password: String!
+}
+
+input UpdateMeInput {
+  email: String
+  avatar: String
+  verified: Boolean
+}
+
+type Query {
+  me: User @auth
+}
+
+type Mutation {
+  signup(signupInput: SignupInput!): AuthUser!
+  signin(signinInput: SigninInput!): AuthUser!
+  updateMe(updateMeInput: UpdateMeInput!): User! @auth
+}
