@@ -1,5 +1,40 @@
 {
-  "posts": [],
-  "users": [],
+  "posts": [
+    {
+      "message": "This is my first post",
+      "author": "-e1uxQe0vezIwRE5cfSIn",
+      "createdAt": 1619193482009,
+      "id": "sXk0tBsukcv-Cvb58QKi0"
+    },
+    {
+      "message": "This is my second post",
+      "author": "-e1uxQe0vezIwRE5cfSIn",
+      "createdAt": 1619193766502,
+      "id": "gYM216p3x5Yt1WaU9SHwp"
+    },
+    {
+      "message": "This is my third post",
+      "author": "-e1uxQe0vezIwRE5cfSIn",
+      "createdAt": 1619194001665,
+      "id": "JF6igHOzB9e-9DGZCK85P"
+    },
+    {
+      "message": "This is my fourth post",
+      "author": "-e1uxQe0vezIwRE5cfSIn",
+      "createdAt": 1619194146378,
+      "id": "gYBl98pDR71Ak3Pq1BfUB"
+    }
+  ],
+  "users": [
+    {
+      "email": "leo@me.com",
+      "password": "password",
+      "role": "ADMIN",
+      "verified": false,
+      "avatar": "http",
+      "createdAt": 1619176210218,
+      "id": "-e1uxQe0vezIwRE5cfSIn"
+    }
+  ],
   "settings": []
 }

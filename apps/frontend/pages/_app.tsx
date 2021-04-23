@@ -1,25 +1,39 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { ReactComponent as NxLogo } from '../public/nx-logo-white.svg';
-import './styles.css';
+import { QueryClient, QueryClientProvider, useIsFetching } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { GraphQLClientProvider } from '../contexts/graphqlClient';
+
+const queryClient = new QueryClient();
+
+function GlobalLoadingIndicator() {
+  const isFetching = useIsFetching();
+
+  return isFetching ? (
+    <div style={{ position: 'absolute', right: 10, top: 10 }}>updating...</div>
+  ) : null;
+}
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
+      <GlobalLoadingIndicator />
+      <ReactQueryDevtools />
       <Head>
         <title>Welcome to frontend!</title>
       </Head>
       <div className="app">
         <header className="flex">
-          <NxLogo width="75" height="50" />
           <h1>Welcome to frontend!</h1>
         </header>
         <main>
-          <Component {...pageProps} />
+          <GraphQLClientProvider>
+            <Component {...pageProps} />
+          </GraphQLClientProvider>
         </main>
       </div>
-    </>
+    </QueryClientProvider>
   );
 }
 
