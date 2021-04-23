@@ -1,26 +1,20 @@
 {
   "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     ".eslintrc.json": "*"
   },
-  "affected": {
-    "defaultBase": "master"
-  },
-  "npmScope": "nx-graphql-react",
+  "affected": { "defaultBase": "master" },
+  "npmScope": "nx-graphql-fullstack",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
-      }
+      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
     }
   },
   "projects": {
-    "graphql-server": {
-      "tags": []
-    }
+    "graphql-server": { "tags": [] },
+    "frontend": { "tags": [] },
+    "frontend-e2e": { "tags": [], "implicitDependencies": ["frontend"] },
+    "util-graphql-interface": { "tags": [] }
   }
 }

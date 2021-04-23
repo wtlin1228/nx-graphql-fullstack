@@ -1,40 +1,5 @@
 {
-  "posts": [
-    {
-      "message": "My first post",
-      "author": "J8CuVuvw3MIiBymhalEyG",
-      "createdAt": 1618386688006,
-      "id": "Cj_0Oqj6rqsMwsMgga76T"
-    },
-    {
-      "message": "My first post",
-      "author": "J8CuVuvw3MIiBymhalEyG",
-      "createdAt": 1618387002205,
-      "id": "5Ch7XVOf2CpDQHndThVDW"
-    },
-    {
-      "message": "My first post",
-      "author": "J8CuVuvw3MIiBymhalEyG",
-      "createdAt": 1618387098395,
-      "id": "we8V9kOnIzQ0_Yh8P4sT8"
-    },
-    {
-      "message": "My first post",
-      "author": "J8CuVuvw3MIiBymhalEyG",
-      "createdAt": 1618387117353,
-      "id": "qthepXhQthhLaKylazZXd"
-    }
-  ],
-  "users": [
-    {
-      "email": "leo@me.com",
-      "password": "password",
-      "role": "ADMIN",
-      "verified": true,
-      "avatar": "http",
-      "createdAt": 1618376663851,
-      "id": "J8CuVuvw3MIiBymhalEyG"
-    }
-  ],
+  "posts": [],
+  "users": [],
   "settings": []
 }

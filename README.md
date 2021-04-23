@@ -1,16 +1,24 @@
-# GraphQL server with NestJS
+# GraphQL fullstack project with Nx, NestJS and Next.js
 
-## Start server
+## Frontend
+
+### Start server
+
+- `$ nx serve frontend`
+
+## GraphQL Server
+
+### Start server
 
 - `$ nx serve graphql-server`
 - open `http://localhost:3333/graphql`
 
-## Generate types by schema
+### Generate types by schema
 
 - `$ npm run graphql:type-generator`
-- open `apps/graphql-server/src/graphql.schema.ts`
+- open `libs/util-graphql-interface/src/lib/graphql.schema.ts`
 
-## Initialize a module
+### Initialize a module
 
 - `$ cd apps/graphql-server/src/app/modules`
 - `$ nest g resource <module_name>`
