@@ -1,7 +1,7 @@
 import React from 'react';
 import { gql } from 'graphql-request';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { useGraphQLClient } from '../contexts/graphqlClient';
+import { useGraphQLClient } from '../contexts/graphQLClient';
 import { CreatePostInput } from '@nx-graphql-fullstack/util-graphql-interface';
 
 const allPostsQuery = gql`
