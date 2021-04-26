@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { QueryClient, QueryClientProvider, useIsFetching } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { GraphQLClientProvider } from '../contexts/graphqlClient';
+import { GraphQLClientProvider } from '../src/contexts/useGraphQLClient';
 
 const queryClient = new QueryClient();
 

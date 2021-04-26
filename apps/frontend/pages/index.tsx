@@ -1,40 +1,10 @@
-import React from 'react';
-import { gql } from 'graphql-request';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { useGraphQLClient } from '../contexts/graphQLClient';
-import { CreatePostInput } from '@nx-graphql-fullstack/util-graphql-interface';
-
-const allPostsQuery = gql`
-  query AllPosts {
-    posts {
-      id
-      message
-      author {
-        email
-      }
-    }
-  }
-`;
-
-const createPostMutation = gql`
-  mutation CreatePost($input: CreatePostInput!) {
-    createPost(createPostInput: $input) {
-      id
-      message
-      author {
-        email
-      }
-    }
-  }
-`;
+import * as React from 'react';
+import usePosts from '../src/hooks/usePosts';
+import useCreatePost from '../src/hooks/useCreatePost';
+import { Post } from '@nx-graphql-fullstack/util-graphql-interface';
 
 const Posts = () => {
-  const graphQLClient = useGraphQLClient();
-  const postsQuery = useQuery('posts', async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const response = await graphQLClient.request(allPostsQuery);
-    return response.posts;
-  });
+  const postsQuery = usePosts();
 
   return (
     <div>
@@ -44,7 +14,7 @@ const Posts = () => {
           'Loading posts...'
         ) : (
           <ul>
-            {postsQuery.data.map((post) => {
+            {postsQuery.data.map((post: Post) => {
               return (
                 <li key={post.id}>
                   <p>{post.message}</p>
@@ -60,25 +30,7 @@ const Posts = () => {
 
 const PostForm = () => {
   const [message, setMessage] = React.useState<string>('');
-
-  const queryClient = useQueryClient();
-  const graphQLClient = useGraphQLClient();
-
-  const mutation = useMutation(
-    async (input: CreatePostInput) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const response = await graphQLClient.request(createPostMutation, {
-        input,
-      });
-      return response;
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries('posts');
-        setMessage('');
-      },
-    }
-  );
+  const createPostMutation = useCreatePost();
 
   return (
     <div>
@@ -86,7 +38,8 @@ const PostForm = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          mutation.mutate({ message });
+          createPostMutation.mutate({ message });
+          setMessage('');
         }}
       >
         <label htmlFor="message">message: </label>
@@ -94,14 +47,25 @@ const PostForm = () => {
           id="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          disabled={mutation.isLoading}
+          disabled={createPostMutation.isLoading}
         />
       </form>
       <p style={{ color: 'gray', opacity: '0.7' }}>
-        {mutation.isLoading ? 'Saving...' : null}
-        {mutation.isError ? 'An error occurred' : null}
-        {mutation.isSuccess ? 'Post added!' : null}
+        {createPostMutation.isLoading ? 'Saving...' : null}
+        {createPostMutation.isError ? 'An error occurred' : null}
+        {createPostMutation.isSuccess ? 'Post added!' : null}
       </p>
+      {createPostMutation.isError ? (
+        <pre>
+          {JSON.stringify(
+            createPostMutation.error.response.errors.map(
+              (error) => error.message
+            ),
+            undefined,
+            4
+          )}
+        </pre>
+      ) : null}
     </div>
   );
 };
