@@ -37,10 +37,10 @@ export function Index() {
       <div>
         {demoType === DemoType.Paginated ? <PaginatedPosts /> : null}
         {demoType === DemoType.All ? (
-          <>
+          <div style={{ display: 'grid', gridTemplateColumns: '400px auto' }}>
             <Posts />
             <CreatePostForm />
-          </>
+          </div>
         ) : null}
         {demoType === DemoType.Infinite ? <>Not implemented yet</> : null}
       </div>
