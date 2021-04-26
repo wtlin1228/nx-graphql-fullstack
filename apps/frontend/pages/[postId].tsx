@@ -17,15 +17,15 @@ export function Post() {
       ) : (
         <div>
           <h3>
-            <Link href="/[postId]" as={`/${postQuery.data.id}`}>
-              <a>
-                {postQuery.data.message} {postQuery.isFetching ? '...' : null}
-              </a>
-            </Link>
+            Message: {postQuery.data.message}{' '}
+            {postQuery.isFetching ? '...' : null}
           </h3>
           <p>
             <small>Post ID: {postQuery.data.id}</small>
           </p>
+          <Link href="/" as="/">
+            Back to Home
+          </Link>
         </div>
       )}
     </div>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Link from 'next/link';
 import usePosts from '../src/hooks/usePosts';
 import useCreatePost from '../src/hooks/useCreatePost';
 import { Post } from '@nx-graphql-fullstack/util-graphql-interface';
@@ -17,7 +18,9 @@ const Posts = () => {
             {postsQuery.data.map((post: Post) => {
               return (
                 <li key={post.id}>
-                  <p>{post.message}</p>
+                  <Link href="/[postId]" as={`/${post.id}`}>
+                    <a href={`/${post.id}`}>{post.message}</a>
+                  </Link>
                 </li>
               );
             })}
