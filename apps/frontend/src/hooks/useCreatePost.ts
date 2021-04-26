@@ -29,7 +29,7 @@ export default function useCreatePost() {
     Post,
     { response: { errors: GraphQLError[] } },
     CreatePostInput,
-    { previousPosts: Post[] }
+    () => void
   >(
     async (input: CreatePostInput) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -41,12 +41,23 @@ export default function useCreatePost() {
     {
       onMutate: async (newPost: Post) => {
         await queryClient.cancelQueries(queryKey);
+
         const previousPosts: Post[] = queryClient.getQueryData(queryKey);
-        queryClient.setQueryData(queryKey, (old: Post[]) => [newPost, ...old]);
-        return { previousPosts };
+
+        queryClient.setQueryData(queryKey, (oldPosts: Post[]) => [
+          {
+            ...newPost,
+            id: Date.now().toString(),
+          },
+          ...oldPosts,
+        ]);
+
+        return () => queryClient.setQueryData(queryKey, previousPosts);
       },
-      onError: (_err, _newPost, context) => {
-        queryClient.setQueryData(queryKey, context.previousPosts);
+      onError: (_err, _newPost, rollback) => {
+        if (rollback) {
+          rollback();
+        }
       },
       onSettled: () => queryClient.invalidateQueries(queryKey),
     }
