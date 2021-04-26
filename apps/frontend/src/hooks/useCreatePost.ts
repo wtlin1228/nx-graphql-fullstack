@@ -5,6 +5,7 @@ import {
   CreatePostInput,
   Post,
 } from '@nx-graphql-fullstack/util-graphql-interface';
+import { GraphQLError } from 'graphql';
 
 export const queryKey = 'posts';
 
@@ -24,7 +25,12 @@ export default function useCreatePost() {
   const queryClient = useQueryClient();
   const graphQLClient = useGraphQLClient();
 
-  return useMutation(
+  return useMutation<
+    Post,
+    { response: { errors: GraphQLError[] } },
+    CreatePostInput,
+    { previousPosts: Post[] }
+  >(
     async (input: CreatePostInput) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const response = await graphQLClient.request(createPostMutation, {
