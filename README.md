@@ -5,6 +5,7 @@
 ### Start server
 
 - `$ nx serve frontend`
+- open `http://localhost:4200/`
 
 ## GraphQL Server
 
