@@ -1,21 +1,36 @@
 import * as React from 'react';
 import Link from 'next/link';
-import usePosts from '../src/hooks/usePosts';
+import usePaginationPost, {
+  getQueryKey as getPaginationPostsQueryKey,
+  request as paginationPostsRequest,
+} from '../src/hooks/usePaginationPosts';
 import useCreatePost from '../src/hooks/useCreatePost';
+import { useGraphQLClient } from '../src/contexts/useGraphQLClient';
 import { Post } from '@nx-graphql-fullstack/util-graphql-interface';
+import { useQueryClient } from 'react-query';
 
 const Posts = () => {
-  const postsQuery = usePosts();
+  const [page, setPage] = React.useState(1);
+  const queryClient = useQueryClient();
+  const graphQLClient = useGraphQLClient();
+  const paginationPostsQuery = usePaginationPost(graphQLClient, page);
+
+  React.useEffect(() => {
+    const nextPage = page + 1;
+    queryClient.prefetchQuery(getPaginationPostsQueryKey(nextPage), () =>
+      paginationPostsRequest(graphQLClient, nextPage)
+    );
+  }, [page]);
 
   return (
     <div>
-      <h1>Posts {postsQuery.isFetching ? 'updating...' : null}</h1>
+      <h1>Posts {paginationPostsQuery.isFetching ? 'updating...' : null}</h1>
       <div>
-        {postsQuery.isLoading ? (
+        {paginationPostsQuery.isLoading ? (
           'Loading posts...'
         ) : (
           <ul>
-            {postsQuery.data.map((post: Post) => {
+            {paginationPostsQuery.data.map((post: Post) => {
               return (
                 <li key={post.id}>
                   <Link href="/[postId]" as={`/${post.id}`}>
@@ -26,6 +41,19 @@ const Posts = () => {
             })}
           </ul>
         )}
+        <button
+          onClick={() => setPage((page) => page - 1)}
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => setPage((page) => page + 1)}
+          disabled={paginationPostsQuery.isPreviousData}
+        >
+          Next
+        </button>
+        <span>Current Page: {page}</span>
       </div>
     </div>
   );
