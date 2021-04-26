@@ -23,8 +23,8 @@ export class PostsResolver {
   }
 
   @Query('posts')
-  findAll(@Context() ctx) {
-    return this.postsService.findAll(ctx);
+  findAll(@Args('page') page: number, @Context() ctx) {
+    return this.postsService.findAll(page, ctx);
   }
 
   @Query('post')

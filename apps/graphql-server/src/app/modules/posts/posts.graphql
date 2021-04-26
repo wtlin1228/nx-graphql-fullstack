@@ -14,7 +14,7 @@ input CreatePostInput {
 }
 
 type Query {
-  posts: [Post]!
+  posts(page: Int): [Post]!
   post(id: ID!): Post!
 }
 

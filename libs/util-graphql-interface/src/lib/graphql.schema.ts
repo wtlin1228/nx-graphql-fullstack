@@ -44,7 +44,7 @@ export class Post {
 }
 
 export abstract class IQuery {
-    abstract posts(): Post[] | Promise<Post[]>;
+    abstract posts(page?: number): Post[] | Promise<Post[]>;
 
     abstract post(id: string): Post | Promise<Post>;
 
