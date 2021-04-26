@@ -1,111 +1,49 @@
 import * as React from 'react';
-import Link from 'next/link';
-import usePaginationPost, {
-  getQueryKey as getPaginationPostsQueryKey,
-  request as paginationPostsRequest,
-} from '../src/hooks/usePaginationPosts';
-import useCreatePost from '../src/hooks/useCreatePost';
-import { useGraphQLClient } from '../src/contexts/useGraphQLClient';
-import { Post } from '@nx-graphql-fullstack/util-graphql-interface';
-import { useQueryClient } from 'react-query';
 
-const Posts = () => {
-  const [page, setPage] = React.useState(1);
-  const queryClient = useQueryClient();
-  const graphQLClient = useGraphQLClient();
-  const paginationPostsQuery = usePaginationPost(graphQLClient, page);
+// components
+import PaginatedPosts from '../src/components/PaginatedPosts';
+import Posts from '../src/components/Posts';
+import CreatePostForm from '../src/components/CreatePostForm';
 
-  React.useEffect(() => {
-    const nextPage = page + 1;
-    queryClient.prefetchQuery(getPaginationPostsQueryKey(nextPage), () =>
-      paginationPostsRequest(graphQLClient, nextPage)
-    );
-  }, [page]);
-
-  return (
-    <div>
-      <h1>Posts {paginationPostsQuery.isFetching ? 'updating...' : null}</h1>
-      <div>
-        {paginationPostsQuery.isLoading ? (
-          'Loading posts...'
-        ) : (
-          <ul>
-            {paginationPostsQuery.data.map((post: Post) => {
-              return (
-                <li key={post.id}>
-                  <Link href="/[postId]" as={`/${post.id}`}>
-                    <a href={`/${post.id}`}>{post.message}</a>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-        <button
-          onClick={() => setPage((page) => page - 1)}
-          disabled={page === 1}
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => setPage((page) => page + 1)}
-          disabled={paginationPostsQuery.isPreviousData}
-        >
-          Next
-        </button>
-        <span>Current Page: {page}</span>
-      </div>
-    </div>
-  );
-};
-
-const PostForm = () => {
-  const [message, setMessage] = React.useState<string>('');
-  const createPostMutation = useCreatePost();
-
-  return (
-    <div>
-      <h1>Create Post</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          createPostMutation.mutate({ message });
-          setMessage('');
-        }}
-      >
-        <label htmlFor="message">message: </label>
-        <input
-          id="message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          disabled={createPostMutation.isLoading}
-        />
-      </form>
-      <p style={{ color: 'gray', opacity: '0.7' }}>
-        {createPostMutation.isLoading ? 'Saving...' : null}
-        {createPostMutation.isError ? 'An error occurred' : null}
-        {createPostMutation.isSuccess ? 'Post added!' : null}
-      </p>
-      {createPostMutation.isError ? (
-        <pre>
-          {JSON.stringify(
-            createPostMutation.error.response.errors.map(
-              (error) => error.message
-            ),
-            undefined,
-            4
-          )}
-        </pre>
-      ) : null}
-    </div>
-  );
-};
+enum DemoType {
+  Paginated,
+  All,
+  Infinite,
+}
 
 export function Index() {
+  const [demoType, setDemoType] = React.useState<DemoType>(DemoType.Paginated);
+
   return (
     <div>
-      <Posts />
-      <PostForm />
+      <button
+        onClick={() => setDemoType(DemoType.Paginated)}
+        disabled={demoType === DemoType.Paginated}
+      >
+        Paginated
+      </button>
+      <button
+        onClick={() => setDemoType(DemoType.All)}
+        disabled={demoType === DemoType.All}
+      >
+        All
+      </button>
+      <button
+        onClick={() => setDemoType(DemoType.Infinite)}
+        disabled={demoType === DemoType.Infinite}
+      >
+        Infinite
+      </button>
+      <div>
+        {demoType === DemoType.Paginated ? <PaginatedPosts /> : null}
+        {demoType === DemoType.All ? (
+          <>
+            <Posts />
+            <CreatePostForm />
+          </>
+        ) : null}
+        {demoType === DemoType.Infinite ? <>Not implemented yet</> : null}
+      </div>
     </div>
   );
 }
