@@ -1,7 +1,9 @@
-import { gql, GraphQLClient } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { GraphQLError } from 'graphql';
 import { useMutation, useQueryClient } from 'react-query';
-import { useGraphQLClient } from '../contexts/useGraphQLClient';
+import { graphQLClient } from '../utils/graphQLClient';
+
+// types
 import {
   CreatePostInput,
   Post,
@@ -21,10 +23,7 @@ export const gqlCreatePostMutation = gql`
   }
 `;
 
-export const mutateCreatePost = async (
-  graphQLClient: GraphQLClient,
-  input: CreatePostInput
-) => {
+export const mutateCreatePost = async (input: CreatePostInput) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await graphQLClient.request(gqlCreatePostMutation, {
     input,
@@ -34,14 +33,13 @@ export const mutateCreatePost = async (
 
 export default function useCreatePost() {
   const queryClient = useQueryClient();
-  const graphQLClient = useGraphQLClient();
 
   return useMutation<
     Post,
     { response: { errors: GraphQLError[] } },
     CreatePostInput,
     () => void
-  >((input: CreatePostInput) => mutateCreatePost(graphQLClient, input), {
+  >((input: CreatePostInput) => mutateCreatePost(input), {
     onMutate: async (newPost: Post) => {
       await queryClient.cancelQueries(queryKey);
 

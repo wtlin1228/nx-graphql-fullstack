@@ -3,7 +3,6 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { QueryClient, QueryClientProvider, useIsFetching } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { GraphQLClientProvider } from '../src/contexts/useGraphQLClient';
 
 const queryClient = new QueryClient();
 
@@ -28,9 +27,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
           <h1>Welcome to frontend!</h1>
         </header>
         <main>
-          <GraphQLClientProvider>
-            <Component {...pageProps} />
-          </GraphQLClientProvider>
+          <Component {...pageProps} />
         </main>
       </div>
     </QueryClientProvider>

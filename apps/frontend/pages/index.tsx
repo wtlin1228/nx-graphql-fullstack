@@ -8,7 +8,6 @@ import InfinitePosts from '../src/components/InfinitePosts';
 
 // hooks
 import { fetchPaginatedPosts } from '../src/hooks/usePaginatedPosts';
-import { graphQLClient } from '../src/contexts/useGraphQLClient';
 
 enum DemoType {
   Paginated = 'Paginated',
@@ -17,7 +16,7 @@ enum DemoType {
 }
 
 export const getServerSideProps = async () => {
-  const posts = await fetchPaginatedPosts(graphQLClient, 1);
+  const posts = await fetchPaginatedPosts(1);
   return {
     props: {
       posts,
