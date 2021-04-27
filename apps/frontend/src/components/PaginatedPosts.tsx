@@ -8,7 +8,7 @@ import { useGraphQLClient } from '../contexts/useGraphQLClient';
 // hooks
 import usePaginatedPost, {
   getPaginatedPostsQueryKey,
-  requestPaginatedPosts,
+  fetchPaginatedPosts,
 } from '../hooks/usePaginatedPosts';
 
 // types
@@ -18,24 +18,24 @@ const PaginatedPosts = () => {
   const [page, setPage] = React.useState(1);
   const queryClient = useQueryClient();
   const graphQLClient = useGraphQLClient();
-  const PaginatedPostsQuery = usePaginatedPost(graphQLClient, page);
+  const paginatedPostsQuery = usePaginatedPost(page);
 
   React.useEffect(() => {
     const nextPage = page + 1;
     queryClient.prefetchQuery(getPaginatedPostsQueryKey(nextPage), () =>
-      requestPaginatedPosts(graphQLClient, nextPage)
+      fetchPaginatedPosts(graphQLClient, nextPage)
     );
   }, [page]);
 
   return (
     <div>
-      <h1>Posts {PaginatedPostsQuery.isFetching ? 'updating...' : null}</h1>
+      <h1>Posts {paginatedPostsQuery.isFetching ? 'updating...' : null}</h1>
       <div>
-        {PaginatedPostsQuery.isLoading ? (
+        {paginatedPostsQuery.isLoading ? (
           'Loading posts...'
         ) : (
           <ul>
-            {PaginatedPostsQuery.data.map((post: Post) => {
+            {paginatedPostsQuery.data.map((post: Post) => {
               return (
                 <li key={post.id}>
                   <Link href="/[postId]" as={`/${post.id}`}>
@@ -54,7 +54,7 @@ const PaginatedPosts = () => {
         </button>
         <button
           onClick={() => setPage((page) => page + 1)}
-          disabled={PaginatedPostsQuery.isPreviousData}
+          disabled={paginatedPostsQuery.isPreviousData}
         >
           Next
         </button>

@@ -1,4 +1,4 @@
-import { gql } from 'graphql-request';
+import { gql, GraphQLClient } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { useGraphQLClient } from '../contexts/useGraphQLClient';
 
@@ -16,19 +16,20 @@ export const gqlPostQuery = gql`
   }
 `;
 
+export const fetchPost = async (
+  graphQLClient: GraphQLClient,
+  postId: string
+) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const response = await graphQLClient.request(gqlPostQuery, {
+    input: postId,
+  });
+  return response.post;
+};
+
 export default function usePost(postId: string) {
   const graphQLClient = useGraphQLClient();
-  return useQuery(
-    getQueryKey(postId),
-    async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      const response = await graphQLClient.request(gqlPostQuery, {
-        input: postId,
-      });
-      return response.post;
-    },
-    {
-      enabled: postId !== 'undefined',
-    }
-  );
+  return useQuery(getQueryKey(postId), () => fetchPost(graphQLClient, postId), {
+    enabled: postId !== 'undefined',
+  });
 }

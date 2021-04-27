@@ -6,9 +6,8 @@ import Posts from '../src/components/Posts';
 import CreatePostForm from '../src/components/CreatePostForm';
 
 enum DemoType {
-  Paginated,
-  All,
-  Infinite,
+  Paginated = 'Paginated',
+  All = 'All',
 }
 
 export function Index() {
@@ -16,24 +15,16 @@ export function Index() {
 
   return (
     <div>
-      <button
-        onClick={() => setDemoType(DemoType.Paginated)}
-        disabled={demoType === DemoType.Paginated}
-      >
-        Paginated
-      </button>
-      <button
-        onClick={() => setDemoType(DemoType.All)}
-        disabled={demoType === DemoType.All}
-      >
-        All
-      </button>
-      <button
-        onClick={() => setDemoType(DemoType.Infinite)}
-        disabled={demoType === DemoType.Infinite}
-      >
-        Infinite
-      </button>
+      {Object.values(DemoType).map((value) => (
+        <button
+          key={value}
+          onClick={() => setDemoType(value)}
+          disabled={demoType === value}
+        >
+          {value}
+        </button>
+      ))}
+
       <div>
         {demoType === DemoType.Paginated ? <PaginatedPosts /> : null}
         {demoType === DemoType.All ? (
@@ -42,7 +33,6 @@ export function Index() {
             <CreatePostForm />
           </div>
         ) : null}
-        {demoType === DemoType.Infinite ? <>Not implemented yet</> : null}
       </div>
     </div>
   );

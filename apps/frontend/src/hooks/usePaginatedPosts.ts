@@ -1,5 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request';
 import { useQuery } from 'react-query';
+import { useGraphQLClient } from '../contexts/useGraphQLClient';
 
 export const getPaginatedPostsQueryKey = (page: number) => ['posts', { page }];
 
@@ -15,7 +16,7 @@ export const gqlPaginatedPostsQuery = gql`
   }
 `;
 
-export const requestPaginatedPosts = async (
+export const fetchPaginatedPosts = async (
   graphQLClient: GraphQLClient,
   page: number
 ) => {
@@ -26,13 +27,11 @@ export const requestPaginatedPosts = async (
   return response.posts;
 };
 
-export default function usePaginatedPosts(
-  graphQLClient: GraphQLClient,
-  page: number
-) {
+export default function usePaginatedPosts(page: number) {
+  const graphQLClient = useGraphQLClient();
   return useQuery(
     getPaginatedPostsQueryKey(page),
-    () => requestPaginatedPosts(graphQLClient, page),
+    () => fetchPaginatedPosts(graphQLClient, page),
     {
       keepPreviousData: true,
     }
