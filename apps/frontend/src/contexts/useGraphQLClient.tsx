@@ -12,6 +12,7 @@ const Context = React.createContext(client);
 function GraphQLClientProvider({ children }) {
   return <Context.Provider value={client}>{children}</Context.Provider>;
 }
+
 function useGraphQLClient() {
   const context = React.useContext(Context);
   if (context === undefined) {
@@ -21,4 +22,5 @@ function useGraphQLClient() {
   }
   return context;
 }
-export { GraphQLClientProvider, useGraphQLClient };
+
+export { GraphQLClientProvider, useGraphQLClient, client as graphQLClient };

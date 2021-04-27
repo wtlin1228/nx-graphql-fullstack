@@ -6,13 +6,26 @@ import Posts from '../src/components/Posts';
 import CreatePostForm from '../src/components/CreatePostForm';
 import InfinitePosts from '../src/components/InfinitePosts';
 
+// hooks
+import { fetchPaginatedPosts } from '../src/hooks/usePaginatedPosts';
+import { graphQLClient } from '../src/contexts/useGraphQLClient';
+
 enum DemoType {
   Paginated = 'Paginated',
   All = 'All',
   Infinite = 'Infinite',
 }
 
-export function Index() {
+export const getServerSideProps = async () => {
+  const posts = await fetchPaginatedPosts(graphQLClient, 1);
+  return {
+    props: {
+      posts,
+    },
+  };
+};
+
+export function Index({ posts }) {
   const [demoType, setDemoType] = React.useState<DemoType>(DemoType.Paginated);
 
   return (
@@ -28,7 +41,9 @@ export function Index() {
       ))}
 
       <div>
-        {demoType === DemoType.Paginated ? <PaginatedPosts /> : null}
+        {demoType === DemoType.Paginated ? (
+          <PaginatedPosts initialData={posts} />
+        ) : null}
         {demoType === DemoType.All ? (
           <div style={{ display: 'grid', gridTemplateColumns: '400px auto' }}>
             <Posts />

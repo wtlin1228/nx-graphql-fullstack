@@ -14,11 +14,11 @@ import usePaginatedPost, {
 // types
 import { Post } from '@nx-graphql-fullstack/util-graphql-interface';
 
-const PaginatedPosts = () => {
+const PaginatedPosts = ({ initialData }: { initialData: Post[] }) => {
   const [page, setPage] = React.useState(1);
   const queryClient = useQueryClient();
   const graphQLClient = useGraphQLClient();
-  const paginatedPostsQuery = usePaginatedPost(page);
+  const paginatedPostsQuery = usePaginatedPost(page, initialData);
 
   React.useEffect(() => {
     const nextPage = page + 1;
