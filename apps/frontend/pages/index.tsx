@@ -4,10 +4,12 @@ import * as React from 'react';
 import PaginatedPosts from '../src/components/PaginatedPosts';
 import Posts from '../src/components/Posts';
 import CreatePostForm from '../src/components/CreatePostForm';
+import InfinitePosts from '../src/components/InfinitePosts';
 
 enum DemoType {
   Paginated = 'Paginated',
   All = 'All',
+  Infinite = 'Infinite',
 }
 
 export function Index() {
@@ -33,6 +35,7 @@ export function Index() {
             <CreatePostForm />
           </div>
         ) : null}
+        {demoType === DemoType.Infinite ? <InfinitePosts /> : null}
       </div>
     </div>
   );
