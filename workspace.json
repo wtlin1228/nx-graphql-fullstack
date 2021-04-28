@@ -1,21 +1,10 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/nest"
-  },
+  "cli": { "defaultCollection": "@nrwl/nest" },
   "defaultProject": "graphql-server",
   "generators": {
-    "@nrwl/react": {
-      "application": {
-        "babel": true
-      }
-    },
-    "@nrwl/next": {
-      "application": {
-        "style": "css",
-        "linter": "eslint"
-      }
-    }
+    "@nrwl/react": { "application": { "babel": true } },
+    "@nrwl/next": { "application": { "style": "css", "linter": "eslint" } }
   },
   "projects": {
     "graphql-server": {
@@ -48,15 +37,11 @@
         },
         "serve": {
           "executor": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "graphql-server:build"
-          }
+          "options": { "buildTarget": "graphql-server:build" }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/graphql-server/**/*.ts"]
-          }
+          "options": { "lintFilePatterns": ["apps/graphql-server/**/*.ts"] }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -64,32 +49,6 @@
           "options": {
             "jestConfig": "apps/graphql-server/jest.config.js",
             "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "frontend-e2e": {
-      "root": "apps/frontend-e2e",
-      "sourceRoot": "apps/frontend-e2e/src",
-      "projectType": "application",
-      "targets": {
-        "e2e": {
-          "executor": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/frontend-e2e/cypress.json",
-            "tsConfig": "apps/frontend-e2e/tsconfig.e2e.json",
-            "devServerTarget": "frontend-react-query:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "frontend-react-query:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["apps/frontend-e2e/**/*.{js,ts}"]
           }
         }
       }
@@ -127,9 +86,7 @@
             "root": "apps/frontend-react-query",
             "outputPath": "dist/apps/frontend-react-query"
           },
-          "configurations": {
-            "production": {}
-          }
+          "configurations": { "production": {} }
         },
         "serve": {
           "executor": "@nrwl/next:server",
@@ -146,9 +103,7 @@
         },
         "export": {
           "executor": "@nrwl/next:export",
-          "options": {
-            "buildTarget": "frontend-react-query:build:production"
-          }
+          "options": { "buildTarget": "frontend-react-query:build:production" }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
