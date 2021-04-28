@@ -1,10 +1,10 @@
 # GraphQL fullstack project with Nx, NestJS and Next.js
 
-## Frontend
+## Frontend (React Query)
 
 ### Start server
 
-- `$ nx serve frontend`
+- `$ nx serve frontend-react-query`
 - open `http://localhost:4200/`
 
 ## GraphQL Server

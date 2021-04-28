@@ -25,16 +25,12 @@
       "targets": {
         "build": {
           "executor": "@nrwl/node:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/graphql-server",
             "main": "apps/graphql-server/src/main.ts",
             "tsConfig": "apps/graphql-server/tsconfig.app.json",
-            "assets": [
-              "apps/graphql-server/src/assets"
-            ]
+            "assets": ["apps/graphql-server/src/assets"]
           },
           "configurations": {
             "production": {
@@ -59,76 +55,15 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/graphql-server/**/*.ts"
-            ]
+            "lintFilePatterns": ["apps/graphql-server/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/graphql-server"
-          ],
+          "outputs": ["coverage/apps/graphql-server"],
           "options": {
             "jestConfig": "apps/graphql-server/jest.config.js",
             "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "frontend": {
-      "root": "apps/frontend",
-      "sourceRoot": "apps/frontend",
-      "projectType": "application",
-      "targets": {
-        "build": {
-          "executor": "@nrwl/next:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
-          "options": {
-            "root": "apps/frontend",
-            "outputPath": "dist/apps/frontend"
-          },
-          "configurations": {
-            "production": {}
-          }
-        },
-        "serve": {
-          "executor": "@nrwl/next:server",
-          "options": {
-            "buildTarget": "frontend:build",
-            "dev": true
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "frontend:build:production",
-              "dev": false
-            }
-          }
-        },
-        "export": {
-          "executor": "@nrwl/next:export",
-          "options": {
-            "buildTarget": "frontend:build:production"
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/frontend"
-          ],
-          "options": {
-            "jestConfig": "apps/frontend/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "apps/frontend/**/*.{ts,tsx,js,jsx}"
-            ]
           }
         }
       }
@@ -143,20 +78,18 @@
           "options": {
             "cypressConfig": "apps/frontend-e2e/cypress.json",
             "tsConfig": "apps/frontend-e2e/tsconfig.e2e.json",
-            "devServerTarget": "frontend:serve"
+            "devServerTarget": "frontend-react-query:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "frontend:serve:production"
+              "devServerTarget": "frontend-react-query:serve:production"
             }
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/frontend-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/frontend-e2e/**/*.{js,ts}"]
           }
         }
       }
@@ -169,19 +102,68 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "libs/util-graphql-interface/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/util-graphql-interface/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/util-graphql-interface"
-          ],
+          "outputs": ["coverage/libs/util-graphql-interface"],
           "options": {
             "jestConfig": "libs/util-graphql-interface/jest.config.js",
             "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "frontend-react-query": {
+      "root": "apps/frontend-react-query",
+      "sourceRoot": "apps/frontend-react-query",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "root": "apps/frontend-react-query",
+            "outputPath": "dist/apps/frontend-react-query"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "frontend-react-query:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "frontend-react-query:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "frontend-react-query:build:production"
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/frontend-react-query"],
+          "options": {
+            "jestConfig": "apps/frontend-react-query/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/frontend-react-query/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         }
       }
