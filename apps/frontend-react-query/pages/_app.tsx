@@ -20,11 +20,11 @@ function CustomApp({ Component, pageProps }: AppProps) {
       <GlobalLoadingIndicator />
       <ReactQueryDevtools />
       <Head>
-        <title>Welcome to frontend!</title>
+        <title>Welcome to frontend-react-query!</title>
       </Head>
       <div className="app">
         <header className="flex">
-          <h1>Welcome to frontend!</h1>
+          <h1>Welcome to frontend-react-query!</h1>
         </header>
         <main>
           <Component {...pageProps} />
