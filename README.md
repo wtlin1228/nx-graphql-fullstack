@@ -2,14 +2,20 @@
 
 We want to compare React Query and Apollo Client. So this project create one GraphQL server and two frontend applications with React Query and Apollo Client.
 
-## Frontend (Apollo Client)
+After my comparison, I will choose to use React Query instead of Apollo Client.
+
+Check this [Notion Table](https://www.notion.so/junyiacademy/GraphQL-Client-Side-8ba2894c6ff949e9a2d6d1af944826f9) For more detail.
+
+![Part of notion comparison](./images/part-of-notion-comparison.png)
+
+## Frontend (Apollo Client) 😣😣😣
 
 ### Start server
 
 - `$ nx serve frontend-apollo-client`
 - open `http://localhost:4200/`
 
-## Frontend (React Query)
+## Frontend (React Query) 😍😍😍
 
 ### Start server
 
