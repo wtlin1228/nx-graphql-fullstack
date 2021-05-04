@@ -9,9 +9,9 @@ import {
   Post,
 } from '@nx-graphql-fullstack/util-graphql-interface';
 
-export const queryKey = 'posts';
+export const createPostQueryKey = 'posts';
 
-export const gqlCreatePostMutation = gql`
+export const CREATE_POST = gql`
   mutation CreatePost($input: CreatePostInput!) {
     createPost(createPostInput: $input) {
       id
@@ -24,8 +24,7 @@ export const gqlCreatePostMutation = gql`
 `;
 
 export const mutateCreatePost = async (input: CreatePostInput) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  const response = await graphQLClient.request(gqlCreatePostMutation, {
+  const response = await graphQLClient.request(CREATE_POST, {
     input,
   });
   return response;
@@ -41,11 +40,13 @@ export default function useCreatePost() {
     () => void
   >((input: CreatePostInput) => mutateCreatePost(input), {
     onMutate: async (newPost: Post) => {
-      await queryClient.cancelQueries(queryKey);
+      await queryClient.cancelQueries(createPostQueryKey);
 
-      const previousPosts: Post[] = queryClient.getQueryData(queryKey);
+      const previousPosts: Post[] = queryClient.getQueryData(
+        createPostQueryKey
+      );
 
-      queryClient.setQueryData(queryKey, (oldPosts: Post[]) => [
+      queryClient.setQueryData(createPostQueryKey, (oldPosts: Post[]) => [
         {
           ...newPost,
           id: Date.now().toString(),
@@ -53,13 +54,13 @@ export default function useCreatePost() {
         ...oldPosts,
       ]);
 
-      return () => queryClient.setQueryData(queryKey, previousPosts);
+      return () => queryClient.setQueryData(createPostQueryKey, previousPosts);
     },
     onError: (_err, _newPost, rollback) => {
       if (rollback) {
         rollback();
       }
     },
-    onSettled: () => queryClient.invalidateQueries(queryKey),
+    onSettled: () => queryClient.invalidateQueries(createPostQueryKey),
   });
 }

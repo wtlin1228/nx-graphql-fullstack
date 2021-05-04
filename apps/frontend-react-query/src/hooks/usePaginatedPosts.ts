@@ -7,8 +7,8 @@ import { Post } from '@nx-graphql-fullstack/util-graphql-interface';
 
 export const getPaginatedPostsQueryKey = (page: number) => ['posts', { page }];
 
-export const gqlPaginatedPostsQuery = gql`
-  query AllPosts($input: Int) {
+export const PAGINATED_POSTS = gql`
+  query PaginatedPosts($input: Int) {
     posts(page: $input) {
       id
       message
@@ -20,8 +20,7 @@ export const gqlPaginatedPostsQuery = gql`
 `;
 
 export const fetchPaginatedPosts = async (page: number) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  const response = await graphQLClient.request(gqlPaginatedPostsQuery, {
+  const response = await graphQLClient.request(PAGINATED_POSTS, {
     input: page,
   });
   return response.posts;

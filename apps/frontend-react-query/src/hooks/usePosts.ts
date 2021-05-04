@@ -4,8 +4,8 @@ import { graphQLClient } from '../utils/graphQLClient';
 
 export const postsQueryKey = 'posts';
 
-export const gqlAllPostsQuery = gql`
-  query AllPosts {
+export const POSTS = gql`
+  query Posts {
     posts {
       id
       message
@@ -16,12 +16,11 @@ export const gqlAllPostsQuery = gql`
   }
 `;
 
-export const fetchAllPosts = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  const response = await graphQLClient.request(gqlAllPostsQuery);
+export const fetchPosts = async () => {
+  const response = await graphQLClient.request(POSTS);
   return response.posts;
 };
 
 export default function usePosts() {
-  return useQuery(postsQueryKey, () => fetchAllPosts());
+  return useQuery(postsQueryKey, fetchPosts);
 }

@@ -1,11 +1,11 @@
-import { gql, GraphQLClient } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { useInfiniteQuery } from 'react-query';
 import { graphQLClient } from '../utils/graphQLClient';
 
 export const infinitePostsQueryKey = 'infinite-posts';
 
-export const gqlInfinitePostsQuery = gql`
-  query AllPosts($input: Int) {
+export const INFINITE_POSTS = gql`
+  query InfinitePosts($input: Int) {
     posts(page: $input) {
       id
       message
@@ -17,8 +17,7 @@ export const gqlInfinitePostsQuery = gql`
 `;
 
 export const fetchInfinitePosts = async ({ pageParam = 1 }) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  const response = await graphQLClient.request(gqlInfinitePostsQuery, {
+  const response = await graphQLClient.request(INFINITE_POSTS, {
     input: pageParam,
   });
   return {
@@ -29,6 +28,6 @@ export const fetchInfinitePosts = async ({ pageParam = 1 }) => {
 
 export default function useInfinitePosts() {
   return useInfiniteQuery(infinitePostsQueryKey, fetchInfinitePosts, {
-    getNextPageParam: (lastPage, _pages) => lastPage.nextPage,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 }
