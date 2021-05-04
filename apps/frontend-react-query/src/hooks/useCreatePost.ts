@@ -1,9 +1,10 @@
-import { ClientError, gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { useMutation, useQueryClient } from 'react-query';
 import { graphQLClient } from '../utils/graphQLClient';
 
 // types
-import {
+import type { ClientError } from 'graphql-request';
+import type {
   CreatePostInput,
   Post,
 } from '@nx-graphql-fullstack/util-graphql-interface';

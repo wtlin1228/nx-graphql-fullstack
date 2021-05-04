@@ -2,6 +2,10 @@ import { gql } from 'graphql-request';
 import { useQuery } from 'react-query';
 import { graphQLClient } from '../utils/graphQLClient';
 
+// types
+import type { ClientError } from 'graphql-request';
+import type { Post } from '@nx-graphql-fullstack/util-graphql-interface';
+
 export const postsQueryKey = 'posts';
 
 export const POSTS = gql`
@@ -16,11 +20,11 @@ export const POSTS = gql`
   }
 `;
 
-export const fetchPosts = async () => {
+export const fetchPosts = async (): Promise<Post[]> => {
   const response = await graphQLClient.request(POSTS);
   return response.posts;
 };
 
 export default function usePosts() {
-  return useQuery(postsQueryKey, fetchPosts);
+  return useQuery<Post[], ClientError>(postsQueryKey, fetchPosts);
 }
