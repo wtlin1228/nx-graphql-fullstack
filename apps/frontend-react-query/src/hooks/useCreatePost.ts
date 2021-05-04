@@ -1,5 +1,4 @@
-import { gql } from 'graphql-request';
-import { GraphQLError } from 'graphql';
+import { ClientError, gql } from 'graphql-request';
 import { useMutation, useQueryClient } from 'react-query';
 import { graphQLClient } from '../utils/graphQLClient';
 
@@ -23,11 +22,14 @@ export const CREATE_POST = gql`
   }
 `;
 
-export const mutateCreatePost = async (input: CreatePostInput) => {
+export const mutateCreatePost = async (
+  input: CreatePostInput
+): Promise<Post> => {
   const response = await graphQLClient.request(CREATE_POST, {
     input,
   });
-  return response;
+
+  return response.createPost;
 };
 
 export default function useCreatePost() {
@@ -35,11 +37,11 @@ export default function useCreatePost() {
 
   return useMutation<
     Post,
-    { response: { errors: GraphQLError[] } },
+    ClientError,
     CreatePostInput,
-    () => void
+    { rollback: () => void }
   >((input: CreatePostInput) => mutateCreatePost(input), {
-    onMutate: async (newPost: Post) => {
+    onMutate: async (newPost: CreatePostInput) => {
       await queryClient.cancelQueries(createPostQueryKey);
 
       const previousPosts: Post[] = queryClient.getQueryData(
@@ -54,9 +56,12 @@ export default function useCreatePost() {
         ...oldPosts,
       ]);
 
-      return () => queryClient.setQueryData(createPostQueryKey, previousPosts);
+      return {
+        rollback: () =>
+          queryClient.setQueryData(createPostQueryKey, previousPosts),
+      };
     },
-    onError: (_err, _newPost, rollback) => {
+    onError: (_err, _newPost, { rollback }) => {
       if (rollback) {
         rollback();
       }
