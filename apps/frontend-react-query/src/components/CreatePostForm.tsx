@@ -5,7 +5,7 @@ import useCreatePost from '../hooks/useCreatePost';
 
 const CreatePostForm = () => {
   const [message, setMessage] = React.useState<string>('');
-  const createPostMutation = useCreatePost();
+  const { mutate, error, isLoading, isError, isSuccess } = useCreatePost();
 
   return (
     <div>
@@ -13,7 +13,7 @@ const CreatePostForm = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          createPostMutation.mutate({ message });
+          mutate({ message });
           setMessage('');
         }}
       >
@@ -22,20 +22,18 @@ const CreatePostForm = () => {
           id="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          disabled={createPostMutation.isLoading}
+          disabled={isLoading}
         />
       </form>
       <p style={{ color: 'gray', opacity: '0.7' }}>
-        {createPostMutation.isLoading ? 'Saving...' : null}
-        {createPostMutation.isError ? 'An error occurred' : null}
-        {createPostMutation.isSuccess ? 'Post added!' : null}
+        {isLoading ? 'Saving...' : null}
+        {isError ? 'An error occurred' : null}
+        {isSuccess ? 'Post added!' : null}
       </p>
-      {createPostMutation.isError ? (
+      {isError ? (
         <pre>
           {JSON.stringify(
-            createPostMutation.error.response.errors.map(
-              (error) => error.message
-            ),
+            error.response.errors.map((error) => error.message),
             undefined,
             4
           )}

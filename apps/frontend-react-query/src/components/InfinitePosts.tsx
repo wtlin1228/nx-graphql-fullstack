@@ -8,17 +8,17 @@ import useInfinitePosts from '../hooks/useInfinitePosts';
 import type { Post } from '@nx-graphql-fullstack/util-graphql-interface';
 
 const InfinitePosts = () => {
-  const infinitePostsQuery = useInfinitePosts();
+  const { data, isFetching, isLoading, fetchNextPage } = useInfinitePosts();
 
   return (
     <div>
-      <h1>Posts {infinitePostsQuery.isFetching ? 'updating...' : null}</h1>
+      <h1>Posts {isFetching ? 'updating...' : null}</h1>
       <div>
-        {infinitePostsQuery.isLoading ? (
+        {isLoading ? (
           'Loading posts...'
         ) : (
           <ul>
-            {infinitePostsQuery.data.pages.map((group, i) => (
+            {data.pages.map((group, i) => (
               <React.Fragment key={i}>
                 {group.posts.map((post: Post) => (
                   <li key={post.id}>
@@ -31,9 +31,7 @@ const InfinitePosts = () => {
             ))}
           </ul>
         )}
-        <button onClick={() => infinitePostsQuery.fetchNextPage()}>
-          Load More
-        </button>
+        <button onClick={() => fetchNextPage()}>Load More</button>
       </div>
     </div>
   );

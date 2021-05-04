@@ -14,7 +14,10 @@ import type { Post } from '@nx-graphql-fullstack/util-graphql-interface';
 const PaginatedPosts = ({ initialData }: { initialData: Post[] }) => {
   const [page, setPage] = React.useState(1);
   const queryClient = useQueryClient();
-  const paginatedPostsQuery = usePaginatedPost(page, initialData);
+  const { data, isFetching, isLoading, isPreviousData } = usePaginatedPost(
+    page,
+    initialData
+  );
 
   React.useEffect(() => {
     const nextPage = page + 1;
@@ -25,13 +28,13 @@ const PaginatedPosts = ({ initialData }: { initialData: Post[] }) => {
 
   return (
     <div>
-      <h1>Posts {paginatedPostsQuery.isFetching ? 'updating...' : null}</h1>
+      <h1>Posts {isFetching ? 'updating...' : null}</h1>
       <div>
-        {paginatedPostsQuery.isLoading ? (
+        {isLoading ? (
           'Loading posts...'
         ) : (
           <ul>
-            {paginatedPostsQuery.data.map((post: Post) => {
+            {data.map((post: Post) => {
               return (
                 <li key={post.id}>
                   <Link href="/[postId]" as={`/${post.id}`}>
@@ -50,7 +53,7 @@ const PaginatedPosts = ({ initialData }: { initialData: Post[] }) => {
         </button>
         <button
           onClick={() => setPage((page) => page + 1)}
-          disabled={paginatedPostsQuery.isPreviousData}
+          disabled={isPreviousData}
         >
           Next
         </button>

@@ -8,17 +8,17 @@ import usePosts from '../hooks/usePosts';
 import type { Post } from '@nx-graphql-fullstack/util-graphql-interface';
 
 const Posts = () => {
-  const postsQuery = usePosts();
+  const { data, isFetching, isLoading } = usePosts();
 
   return (
     <div>
-      <h1>Posts {postsQuery.isFetching ? 'updating...' : null}</h1>
+      <h1>Posts {isFetching ? 'updating...' : null}</h1>
       <div>
-        {postsQuery.isLoading ? (
+        {isLoading ? (
           'Loading posts...'
         ) : (
           <ul>
-            {postsQuery.data.map((post: Post) => {
+            {data.map((post: Post) => {
               return (
                 <li key={post.id}>
                   <Link href="/[postId]" as={`/${post.id}`}>
