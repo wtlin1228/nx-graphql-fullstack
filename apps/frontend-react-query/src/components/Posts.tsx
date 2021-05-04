@@ -5,7 +5,7 @@ import Link from 'next/link';
 import usePosts from '../hooks/usePosts';
 
 // types
-import { Post } from '@nx-graphql-fullstack/util-graphql-interface';
+import type { Post } from '@nx-graphql-fullstack/util-graphql-interface';
 
 const Posts = () => {
   const postsQuery = usePosts();

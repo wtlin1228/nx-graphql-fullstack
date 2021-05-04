@@ -5,7 +5,7 @@ import Link from 'next/link';
 import useInfinitePosts from '../hooks/useInfinitePosts';
 
 // types
-import { Post } from '@nx-graphql-fullstack/util-graphql-interface';
+import type { Post } from '@nx-graphql-fullstack/util-graphql-interface';
 
 const InfinitePosts = () => {
   const infinitePostsQuery = useInfinitePosts();

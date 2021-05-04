@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Link from 'next/link';
-
-// contexts
 import { useQueryClient } from 'react-query';
 
 // hooks
@@ -11,7 +9,7 @@ import usePaginatedPost, {
 } from '../hooks/usePaginatedPosts';
 
 // types
-import { Post } from '@nx-graphql-fullstack/util-graphql-interface';
+import type { Post } from '@nx-graphql-fullstack/util-graphql-interface';
 
 const PaginatedPosts = ({ initialData }: { initialData: Post[] }) => {
   const [page, setPage] = React.useState(1);
