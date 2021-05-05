@@ -22,6 +22,11 @@ Check this [Notion Table](https://www.notion.so/junyiacademy/GraphQL-Client-Side
 - `$ nx serve frontend-react-query`
 - open `http://localhost:4200/`
 
+### Run unit tests
+
+- `$ npm run test frontend-react-query`
+- `$ npm run test frontend-react-query -- --watch` (watch mode)
+
 ## GraphQL Server
 
 ### Start server

@@ -27,13 +27,17 @@ export const fetchPaginatedPosts = async (page: number): Promise<Post[]> => {
   return response.posts;
 };
 
-export default function usePaginatedPosts(page: number, initialData: Post[]) {
+export default function usePaginatedPosts(
+  page: number,
+  initialData: Post[] = []
+) {
   return useQuery<Post[], ClientError>(
     getPaginatedPostsQueryKey(page),
     () => fetchPaginatedPosts(page),
     {
       keepPreviousData: true,
       initialData,
+      retry: process.env.NODE_ENV === 'test' ? 0 : 3,
     }
   );
 }

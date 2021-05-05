@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { graphql } from 'msw';
 import { setupServer } from 'msw/node';
-import wrapper from '../../test/wrapper';
+import createReactQueryWrapper from '../../test/reactQueryWrapper';
 import usePost from '../usePost';
 
 // mocks
@@ -34,8 +34,10 @@ afterAll(() => {
   server.close();
 });
 
-test('should get posts', async () => {
+test('should get post', async () => {
   const fakePostId = 'fake-id';
+
+  const wrapper = createReactQueryWrapper();
   const { result, waitFor } = renderHook(() => usePost(fakePostId), {
     wrapper,
   });

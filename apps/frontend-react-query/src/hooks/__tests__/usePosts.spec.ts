@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { graphql } from 'msw';
 import { setupServer } from 'msw/node';
-import wrapper from '../../test/wrapper';
+import createReactQueryWrapper from '../../test/reactQueryWrapper';
 import usePosts from '../usePosts';
 
 // mocks
@@ -28,6 +28,7 @@ afterAll(() => {
 });
 
 test('should get posts', async () => {
+  const wrapper = createReactQueryWrapper();
   const { result, waitFor } = renderHook(() => usePosts(), { wrapper });
 
   await waitFor(() => result.current.isSuccess);
@@ -38,17 +39,22 @@ test('should get posts', async () => {
 test('should get errors', async () => {
   server.use(
     graphql.query('Posts', (_req, res, ctx) => {
-      return res(ctx.status(500, 'There is Error'));
+      return res(
+        ctx.errors([
+          {
+            message: 'Oh oh, something went wrong! Q__Q',
+          },
+        ])
+      );
     })
   );
 
-  const { result, waitFor } = renderHook(() => usePosts(), { wrapper });
+  const wrapper = createReactQueryWrapper();
+  const { result, waitFor } = renderHook(() => usePosts(), {
+    wrapper,
+  });
 
   await waitFor(() => result.current.isError);
 
-  // expect isError will be true, but it's false
-  // expect isSuccess is false but it's true, and receive the mockPosts
-  console.log(result.current);
-
-  expect(result.current.error).toEqual('There is Error');
+  expect(result.current.error).toBeDefined();
 });

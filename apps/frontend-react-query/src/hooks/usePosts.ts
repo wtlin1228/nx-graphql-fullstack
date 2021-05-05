@@ -26,5 +26,7 @@ export const fetchPosts = async (): Promise<Post[]> => {
 };
 
 export default function usePosts() {
-  return useQuery<Post[], ClientError>(postsQueryKey, fetchPosts);
+  return useQuery<Post[], ClientError>(postsQueryKey, fetchPosts, {
+    retry: process.env.NODE_ENV === 'test' ? 0 : 3,
+  });
 }

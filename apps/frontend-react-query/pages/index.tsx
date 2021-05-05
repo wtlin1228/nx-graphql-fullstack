@@ -16,12 +16,20 @@ enum DemoType {
 }
 
 export const getServerSideProps = async () => {
-  const posts = await fetchPaginatedPosts(1);
-  return {
-    props: {
-      posts,
-    },
-  };
+  try {
+    const posts = await fetchPaginatedPosts(1);
+    return {
+      props: {
+        posts,
+      },
+    };
+  } catch {
+    return {
+      props: {
+        posts: [],
+      },
+    };
+  }
 };
 
 export function Index({ posts }) {
