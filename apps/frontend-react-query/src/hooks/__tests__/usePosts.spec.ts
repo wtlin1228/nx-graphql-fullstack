@@ -4,28 +4,16 @@ import { setupServer } from 'msw/node';
 import wrapper from '../../test/wrapper';
 import usePosts from '../usePosts';
 
-const mockPosts = [
-  {
-    message: 'Post 1',
-    author: {
-      email: '-e1uxQe0vezIwRE5cfSIn',
-    },
-    id: '3Wa0_kWdPiO9b4kern4uv',
-  },
-  {
-    message: 'Post 2',
-    author: {
-      email: '-e1uxQe0vezIwRE5cfSIn',
-    },
-    id: 'pi_MSRZVwicgSSWqPM_wv',
-  },
-];
+// mocks
+import { generateRandomPost } from '../../__mocks__';
+
+const POSTS = Array.from({ length: 2 }, generateRandomPost);
 
 const server = setupServer(
-  graphql.query('Posts', (req, res, ctx) => {
+  graphql.query('Posts', (_req, res, ctx) => {
     return res(
       ctx.data({
-        posts: mockPosts,
+        posts: POSTS,
       })
     );
   })
@@ -44,12 +32,12 @@ test('should get posts', async () => {
 
   await waitFor(() => result.current.isSuccess);
 
-  expect(result.current.data).toEqual(mockPosts);
+  expect(result.current.data).toEqual(POSTS);
 });
 
 test('should get errors', async () => {
   server.use(
-    graphql.query('Posts', (req, res, ctx) => {
+    graphql.query('Posts', (_req, res, ctx) => {
       return res(ctx.status(500, 'There is Error'));
     })
   );
