@@ -28,8 +28,9 @@ afterAll(() => {
 });
 
 test('should get posts', async () => {
-  const wrapper = createReactQueryWrapper();
-  const { result, waitFor } = renderHook(() => usePosts(), { wrapper });
+  const { result, waitFor } = renderHook(() => usePosts(), {
+    wrapper: createReactQueryWrapper(),
+  });
 
   await waitFor(() => result.current.isSuccess);
 
@@ -49,9 +50,8 @@ test('should get errors', async () => {
     })
   );
 
-  const wrapper = createReactQueryWrapper();
   const { result, waitFor } = renderHook(() => usePosts(), {
-    wrapper,
+    wrapper: createReactQueryWrapper(),
   });
 
   await waitFor(() => result.current.isError);

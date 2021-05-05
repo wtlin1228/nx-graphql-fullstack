@@ -37,9 +37,8 @@ afterAll(() => {
 test('should get post', async () => {
   const fakePostId = 'fake-id';
 
-  const wrapper = createReactQueryWrapper();
   const { result, waitFor } = renderHook(() => usePost(fakePostId), {
-    wrapper,
+    wrapper: createReactQueryWrapper(),
   });
 
   await waitFor(() => result.current.isSuccess);

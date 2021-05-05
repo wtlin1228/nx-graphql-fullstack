@@ -34,9 +34,8 @@ afterAll(() => {
 });
 
 test('should get paginated posts', async () => {
-  const wrapper = createReactQueryWrapper();
   const { result, waitFor } = renderHook(() => usePaginatedPosts(1), {
-    wrapper,
+    wrapper: createReactQueryWrapper(),
   });
 
   // because usePaginatedPosts have initialData, the default isSuccess = true
