@@ -37,7 +37,6 @@ export default function usePaginatedPosts(
     {
       keepPreviousData: true,
       initialData,
-      retry: process.env.NODE_ENV === 'test' ? 0 : 3,
     }
   );
 }

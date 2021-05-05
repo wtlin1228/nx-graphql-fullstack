@@ -33,7 +33,6 @@ export default function usePost(postId: string) {
     () => fetchPost(postId),
     {
       enabled: postId !== 'undefined',
-      retry: process.env.NODE_ENV === 'test' ? 0 : 3,
     }
   );
 }
