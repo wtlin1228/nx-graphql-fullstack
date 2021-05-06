@@ -1,43 +1,34 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { graphql } from 'msw';
-import { setupServer } from 'msw/node';
-import createReactQueryWrapper from '../../test/reactQueryWrapper';
+import { server } from '../../tests/setupTests';
+import createReactQueryWrapper from '../../tests/createReactQueryWrapper';
 import usePost from '../usePost';
 
 // mocks
 import { generateRandomPost, generateRandomUser } from '../../__mocks__';
 
-const USER = generateRandomUser();
-const CURRENT_TIME_STAMP = Date.now().toString();
-
-const server = setupServer(
-  graphql.query('Post', (req, res, ctx) => {
-    const { input } = req.variables;
-
-    return res(
-      ctx.data({
-        post: generateRandomPost({
-          id: input,
-          author: USER,
-          createdAt: CURRENT_TIME_STAMP,
-        }),
-      })
-    );
-  })
-);
-
-beforeAll(() => {
-  server.listen();
-});
-
-afterAll(() => {
-  server.close();
-});
-
 test('should get post', async () => {
-  const fakePostId = 'fake-id';
+  const MOCK_POST_ID = 'fake-id';
+  const MOCK_USER = generateRandomUser();
+  const CURRENT_TIME_STAMP = Date.now().toString();
 
-  const { result, waitFor } = renderHook(() => usePost(fakePostId), {
+  server.use(
+    graphql.query('Post', (req, res, ctx) => {
+      const { input } = req.variables;
+
+      return res(
+        ctx.data({
+          post: generateRandomPost({
+            id: input,
+            author: MOCK_USER,
+            createdAt: CURRENT_TIME_STAMP,
+          }),
+        })
+      );
+    })
+  );
+
+  const { result, waitFor } = renderHook(() => usePost(MOCK_POST_ID), {
     wrapper: createReactQueryWrapper(),
   });
 
@@ -45,8 +36,8 @@ test('should get post', async () => {
 
   expect(result.current.data).toEqual(
     generateRandomPost({
-      id: fakePostId,
-      author: USER,
+      id: MOCK_POST_ID,
+      author: MOCK_USER,
       createdAt: CURRENT_TIME_STAMP,
     })
   );

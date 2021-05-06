@@ -7,4 +7,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/frontend-react-query',
+  setupFilesAfterEnv: ['./src/tests/setupTests.ts'],
 };
