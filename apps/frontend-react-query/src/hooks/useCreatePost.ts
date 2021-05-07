@@ -41,15 +41,14 @@ export default function useCreatePost() {
     ClientError,
     CreatePostInput,
     { rollback: () => void }
-  >((input: CreatePostInput) => mutateCreatePost(input), {
+  >(mutateCreatePost, {
     onMutate: async (newPost: CreatePostInput) => {
       await queryClient.cancelQueries(createPostQueryKey);
 
-      const previousPosts: Post[] = queryClient.getQueryData(
-        createPostQueryKey
-      );
+      const previousPosts: Post[] =
+        queryClient.getQueryData(createPostQueryKey) || [];
 
-      queryClient.setQueryData(createPostQueryKey, (oldPosts: Post[]) => [
+      queryClient.setQueryData(createPostQueryKey, (oldPosts: Post[] = []) => [
         {
           ...newPost,
           id: Date.now().toString(),
