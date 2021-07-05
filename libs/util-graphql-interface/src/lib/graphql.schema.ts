@@ -17,6 +17,11 @@ export class CreatePostInput {
     message: string;
 }
 
+export class UpdatePostInput {
+    id: string;
+    message: string;
+}
+
 export class SignupInput {
     email: string;
     password: string;
@@ -53,6 +58,8 @@ export abstract class IQuery {
 
 export abstract class IMutation {
     abstract createPost(createPostInput: CreatePostInput): Post | Promise<Post>;
+
+    abstract updatePost(updatePostInput: UpdatePostInput): Post | Promise<Post>;
 
     abstract signup(signupInput: SignupInput): AuthUser | Promise<AuthUser>;
 

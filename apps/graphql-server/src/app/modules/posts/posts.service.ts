@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ValidationError } from 'apollo-server-express';
 import { CreatePostInput } from './dto/create-post.input';
+import { UpdatePostInput } from './dto/update-post.input';
 
 @Injectable()
 export class PostsService {
@@ -9,6 +10,18 @@ export class PostsService {
       throw new ValidationError('Message can not include Bad word');
     }
     const post = models.Post.createOne({ ...createPostInput, author: user.id });
+    return post;
+  }
+
+  update(updatePostInput: UpdatePostInput, { user, models }) {
+    const post = models.Post.findOne({ id: updatePostInput.id });
+
+    if (post.author !== user.id) {
+      throw new ValidationError('Only author can edit the post');
+    }
+
+    models.Post.updateOne(post, updatePostInput);
+
     return post;
   }
 

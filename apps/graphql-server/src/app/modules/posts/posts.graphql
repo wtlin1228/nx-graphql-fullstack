@@ -13,6 +13,11 @@ input CreatePostInput {
   message: String!
 }
 
+input UpdatePostInput {
+  id: ID!
+  message: String!
+}
+
 type Query {
   posts(page: Int): [Post]!
   post(id: ID!): Post!
@@ -20,4 +25,5 @@ type Query {
 
 type Mutation {
   createPost(createPostInput: CreatePostInput!): Post! @auth
+  updatePost(updatePostInput: UpdatePostInput!): Post! @auth
 }

@@ -9,6 +9,7 @@ import {
 } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
 import { CreatePostInput } from './dto/create-post.input';
+import { UpdatePostInput } from './dto/update-post.input';
 
 @Resolver('Post')
 export class PostsResolver {
@@ -20,6 +21,14 @@ export class PostsResolver {
     @Context() ctx
   ) {
     return this.postsService.create(createPostInput, ctx);
+  }
+
+  @Mutation('updatePost')
+  update(
+    @Args('updatePostInput') updatePostInput: UpdatePostInput,
+    @Context() ctx
+  ) {
+    return this.postsService.update(updatePostInput, ctx);
   }
 
   @Query('posts')
